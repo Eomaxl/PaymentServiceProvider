@@ -35,6 +35,19 @@
     </properties>
 
     <dependencies>
+        <!-- Internal dependencies -->
+        <dependency>
+            <groupId>com.paymentprovider</groupId>
+            <artifactId>common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.paymentprovider</groupId>
+            <artifactId>currency-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- Spring Boot starters -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
