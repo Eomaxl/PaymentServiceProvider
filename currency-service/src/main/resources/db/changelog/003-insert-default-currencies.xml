@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="003-insert-default-currencies" author="currency-service">
+        <insert tableName="currencies">
+            <column name="code" value="USD"/>
+            <column name="name" value="US Dollar"/>
+            <column name="symbol" value="$"/>
+            <column name="decimal_places" value="2"/>
+            <column name="is_active" value="true"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+
+        <insert tableName="currencies">
+            <column name="code" value="EUR"/>
+            <column name="name" value="Euro"/>
+            <column name="symbol" value="€"/>
+            <column name="decimal_places" value="2"/>
+            <column name="is_active" value="true"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+
+        <insert tableName="currencies">
+            <column name="code" value="GBP"/>
+            <column name="name" value="British Pound"/>
+            <column name="symbol" value="£"/>
+            <column name="decimal_places" value="2"/>
+            <column name="is_active" value="true"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+
+        <insert tableName="currencies">
+            <column name="code" value="JPY"/>
+            <column name="name" value="Japanese Yen"/>
+            <column name="symbol" value="¥"/>
+            <column name="decimal_places" value="0"/>
+            <column name="is_active" value="true"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+
+        <insert tableName="currencies">
+            <column name="code" value="CAD"/>
+            <column name="name" value="Canadian Dollar"/>
+            <column name="symbol" value="C$"/>
+            <column name="decimal_places" value="2"/>
+            <column name="is_active" value="true"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+
+        <insert tableName="currencies">
+            <column name="code" value="AUD"/>
+            <column name="name" value="Australian Dollar"/>
+            <column name="symbol" value="A$"/>
+            <column name="decimal_places" value="2"/>
+            <column name="is_active" value="true"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

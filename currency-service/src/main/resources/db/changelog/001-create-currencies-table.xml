@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="001-create-currencies-table" author="currency-service">
+        <createTable tableName="currencies">
+            <column name="code" type="VARCHAR(3)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="symbol" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="decimal_places" type="INTEGER" defaultValue="2">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_active" type="BOOLEAN" defaultValue="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
