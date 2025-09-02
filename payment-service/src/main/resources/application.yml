@@ -1,0 +1,300 @@
+spring:
+  application:
+    name: payment-service
+  profiles:
+    active: local
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/payment_db
+    username: ${DB_USERNAME:payment_user}
+    password: ${DB_PASSWORD:payment_pass}
+    driver-class-name: org.postgresql.Driver
+    # Connection pooling configuration for scalability
+    hikari:
+      maximum-pool-size: ${DB_POOL_SIZE:20}
+      minimum-idle: ${DB_POOL_MIN_IDLE:5}
+      idle-timeout: ${DB_IDLE_TIMEOUT:300000}
+      max-lifetime: ${DB_MAX_LIFETIME:1800000}
+      connection-timeout: ${DB_CONNECTION_TIMEOUT:30000}
+      leak-detection-threshold: ${DB_LEAK_DETECTION:60000}
+      pool-name: PaymentServicePool
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        # Performance optimizations for scaling
+        jdbc:
+          batch_size: 25
+          order_inserts: true
+          order_updates: true
+        cache:
+          use_second_level_cache: true
+          use_query_cache: true
+          region:
+            factory_class: org.hibernate.cache.jcache.JCacheRegionFactory
+
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:}
+    timeout: 2000ms
+    # Connection pooling for Redis
+    lettuce:
+      pool:
+        max-active: ${REDIS_POOL_MAX_ACTIVE:8}
+        max-idle: ${REDIS_POOL_MAX_IDLE:8}
+        min-idle: ${REDIS_POOL_MIN_IDLE:0}
+        max-wait: ${REDIS_POOL_MAX_WAIT:2000ms}
+
+  # Session management for stateless scaling
+  session:
+    store-type: redis
+    redis:
+      namespace: payment-service:session
+      flush-mode: on_save
+    timeout: ${SESSION_TIMEOUT:1800s}
+
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: /api/v1
+  # Configuration for load balancing and scaling
+  tomcat:
+    threads:
+      max: ${TOMCAT_MAX_THREADS:200}
+      min-spare: ${TOMCAT_MIN_SPARE_THREADS:10}
+    max-connections: ${TOMCAT_MAX_CONNECTIONS:8192}
+    accept-count: ${TOMCAT_ACCEPT_COUNT:100}
+    connection-timeout: ${TOMCAT_CONNECTION_TIMEOUT:20000}
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    min-response-size: 1024
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,payment-health
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+      probes:
+        enabled: true
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+    payment-health:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+        step: 10s
+        descriptions: true
+    distribution:
+      percentiles-histogram:
+        payment.processing.duration: true
+        api.response.duration: true
+        fraud.analysis.duration: true
+      percentiles:
+        payment.processing.duration: 0.5,0.95,0.99
+        api.response.duration: 0.5,0.95,0.99
+        fraud.analysis.duration: 0.5,0.95,0.99
+    tags:
+      application: payment-service
+      environment: ${spring.profiles.active}
+      version: 1.0.0
+  health:
+    circuitbreakers:
+      enabled: true
+    diskspace:
+      enabled: true
+    redis:
+      enabled: true
+    db:
+      enabled: true
+
+payment:
+  security:
+    encryption:
+      # Base64 encoded AES-256 key - in production, retrieve from AWS KMS
+      key: ${ENCRYPTION_KEY:}
+    jwt:
+      # JWT secret key - in production, retrieve from AWS Secrets Manager
+      secret: ${JWT_SECRET:mySecretKey123456789012345678901234567890}
+      access-token-expiration-minutes: ${JWT_ACCESS_TOKEN_EXPIRATION:15}
+      refresh-token-expiration-days: ${JWT_REFRESH_TOKEN_EXPIRATION:7}
+      issuer: ${JWT_ISSUER:payment-service}
+
+  # Scaling configuration
+  scaling:
+    max-concurrent-payments: ${MAX_CONCURRENT_PAYMENTS:1000}
+    max-concurrent-fraud-checks: ${MAX_CONCURRENT_FRAUD_CHECKS:500}
+    request-timeout-ms: ${REQUEST_TIMEOUT_MS:30000}
+    enable-async-processing: ${ENABLE_ASYNC_PROCESSING:true}
+    batch-size: ${BATCH_SIZE:100}
+
+# Currency service configuration
+currency:
+  service:
+    url: ${CURRENCY_SERVICE_URL:http://localhost:8083}
+
+# Distributed Tracing Configuration
+tracing:
+  zipkin:
+    endpoint: ${ZIPKIN_ENDPOINT:http://localhost:9411/api/v2/spans}
+  sampling:
+    probability: ${TRACING_SAMPLING_PROBABILITY:0.1}
+
+logging:
+  level:
+    com.paymentprovider: INFO
+    org.springframework.security: DEBUG
+    io.micrometer.tracing: DEBUG
+    brave: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%X{traceId:-},%X{spanId:-}] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%X{traceId:-},%X{spanId:-}] [%thread] %-5level %logger{36} - %msg%n"
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      payment-processor:
+        register-health-indicator: true
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+        permitted-number-of-calls-in-half-open-state: 3
+        wait-duration-in-open-state: 30s
+        failure-rate-threshold: 50
+        slow-call-rate-threshold: 60
+        slow-call-duration-threshold: 2s
+      fraud-service:
+        register-health-indicator: true
+        sliding-window-size: 20
+        minimum-number-of-calls: 10
+        permitted-number-of-calls-in-half-open-state: 5
+        wait-duration-in-open-state: 60s
+        failure-rate-threshold: 40
+        slow-call-rate-threshold: 50
+        slow-call-duration-threshold: 3s
+      database:
+        register-health-indicator: true
+        sliding-window-size: 15
+        minimum-number-of-calls: 8
+        permitted-number-of-calls-in-half-open-state: 4
+        wait-duration-in-open-state: 45s
+        failure-rate-threshold: 60
+
+  retry:
+    instances:
+      payment-processor:
+        max-attempts: 3
+        wait-duration: 1s
+        exponential-backoff-multiplier: 2
+        retry-exceptions:
+          - java.net.ConnectException
+          - java.net.SocketTimeoutException
+          - org.springframework.web.client.ResourceAccessException
+      fraud-service:
+        max-attempts: 2
+        wait-duration: 500ms
+        exponential-backoff-multiplier: 1.5
+      database:
+        max-attempts: 3
+        wait-duration: 200ms
+        exponential-backoff-multiplier: 2
+        retry-exceptions:
+          - org.springframework.dao.DataAccessResourceFailureException
+          - org.springframework.dao.TransientDataAccessException
+
+  bulkhead:
+    instances:
+      payment-processor:
+        max-concurrent-calls: 50
+        max-wait-duration: 5s
+      fraud-service:
+        max-concurrent-calls: 30
+        max-wait-duration: 3s
+      database:
+        max-concurrent-calls: 100
+        max-wait-duration: 2s
+
+  timelimiter:
+    instances:
+      payment-processor:
+        timeout-duration: 10s
+        cancel-running-future: true
+      fraud-service:
+        timeout-duration: 5s
+        cancel-running-future: true
+      database:
+        timeout-duration: 3s
+        cancel-running-future: true
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: jdbc:postgresql://localhost:5432/payment_db_local
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+
+logging:
+  level:
+    com.paymentprovider: DEBUG
+    org.springframework.web: DEBUG
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:payment-db-dev.cluster.amazonaws.com}:5432/payment_db_dev
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+---
+spring:
+  config:
+    activate:
+      on-profile: staging
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:payment-db-staging.cluster.amazonaws.com}:5432/payment_db_staging
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+logging:
+  level:
+    com.paymentprovider: INFO
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:payment-db-prod.cluster.amazonaws.com}:5432/payment_db_prod
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+logging:
+  level:
+    com.paymentprovider: WARN
+    org.springframework.security: WARN
