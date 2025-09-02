@@ -1,0 +1,54 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: currency-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/payment_provider
+    username: payment_user
+    password: payment_pass
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+
+# Currency service specific configuration
+currency:
+  conversion:
+    fee:
+      percentage: 0.025  # 2.5% conversion fee
+      minimum: 0.10      # Minimum fee of $0.10
+
+  provider:
+    exchangeratesapi:
+      url: https://api.exchangeratesapi.io/v1
+      apikey: ${EXCHANGE_RATES_API_KEY:demo_key}
+
+# Management endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+# Logging
+logging:
+  level:
+    com.paymentprovider.currency: INFO
+    org.springframework.web: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
