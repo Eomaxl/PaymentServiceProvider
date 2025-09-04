@@ -32,7 +32,7 @@ public class Merchant {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "settlement_currency", nullable = false)
-    private com.paymentprovider.payment.domain.Currency settlementCurrency;
+    private com.paymentprovider.paymentservice.domain.Currency settlementCurrency;
 
     @Column(name = "auto_currency_conversion")
     private Boolean autoCurrencyConversion = true;
@@ -57,7 +57,7 @@ public class Merchant {
     // Constructors
     public Merchant() {}
 
-    public Merchant(String merchantId, String businessName, com.paymentprovider.payment.domain.Currency settlementCurrency) {
+    public Merchant(String merchantId, String businessName, com.paymentprovider.paymentservice.domain.Currency settlementCurrency) {
         this.merchantId = merchantId;
         this.businessName = businessName;
         this.settlementCurrency = settlementCurrency;
@@ -69,7 +69,7 @@ public class Merchant {
         return status == MerchantStatus.ACTIVE;
     }
 
-    public boolean requiresCurrencyConversion(com.paymentprovider.payment.domain.Currency paymentCurrency) {
+    public boolean requiresCurrencyConversion(com.paymentprovider.paymentservice.domain.Currency paymentCurrency) {
         return autoCurrencyConversion && !settlementCurrency.equals(paymentCurrency);
     }
 
@@ -83,8 +83,8 @@ public class Merchant {
     public MerchantStatus getStatus() { return status; }
     public void setStatus(MerchantStatus status) { this.status = status; }
 
-    public com.paymentprovider.payment.domain.Currency getSettlementCurrency() { return settlementCurrency; }
-    public void setSettlementCurrency(com.paymentprovider.payment.domain.Currency settlementCurrency) { this.settlementCurrency = settlementCurrency; }
+    public com.paymentprovider.paymentservice.domain.Currency getSettlementCurrency() { return settlementCurrency; }
+    public void setSettlementCurrency(com.paymentprovider.paymentservice.domain.Currency settlementCurrency) { this.settlementCurrency = settlementCurrency; }
 
     public Boolean getAutoCurrencyConversion() { return autoCurrencyConversion; }
     public void setAutoCurrencyConversion(Boolean autoCurrencyConversion) { this.autoCurrencyConversion = autoCurrencyConversion; }

@@ -1,6 +1,6 @@
 package com.paymentprovider.paymentservice.services;
 
-import com.paymentprovider.payment.domain.Currency;
+import com.paymentprovider.paymentservice.domain.Currency;
 
 import java.math.BigDecimal;
 

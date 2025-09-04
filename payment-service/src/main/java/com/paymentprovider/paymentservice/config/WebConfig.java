@@ -1,6 +1,6 @@
 package com.paymentprovider.paymentservice.config;
 
-import com.paymentprovider.payment.interceptor.MetricsInterceptor;
+import com.paymentprovider.paymentservice.interceptor.MetricsInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

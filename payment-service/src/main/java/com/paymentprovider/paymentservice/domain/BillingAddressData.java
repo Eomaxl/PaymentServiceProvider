@@ -3,16 +3,16 @@ package com.paymentprovider.paymentservice.domain;
 import jakarta.persistence.Embeddable;
 
 @Embeddable
-public class BillingAdressData {
+public class BillingAddressData {
     private String street;
     private String city;
     private String state;
     private String postalCode;
     private String countryCode;
 
-    public BillingAdressData() {}
+    public BillingAddressData() {}
 
-    public BillingAdressData(String street, String city, String state, String postalCode, String countryCode) {
+    public BillingAddressData(String street, String city, String state, String postalCode, String countryCode) {
         this.street = street;
         this.city = city;
         this.state = state;
@@ -20,11 +20,11 @@ public class BillingAdressData {
         this.countryCode = countryCode;
     }
 
-    public static BillingAdressData from(BillingAddress billingAddress){
+    public static BillingAddressData from(BillingAddress billingAddress){
         if (billingAddress == null){
             return null;
         }
-        return new BillingAdressData(
+        return new BillingAddressData(
                 billingAddress.getStreet(),
                 billingAddress.getCity(),
                 billingAddress.getState(),

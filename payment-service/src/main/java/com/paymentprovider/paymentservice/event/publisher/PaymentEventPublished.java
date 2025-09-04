@@ -1,6 +1,6 @@
 package com.paymentprovider.paymentservice.event.publisher;
 
-import com.paymentprovider.payment.event.PaymentEvent;
+import com.paymentprovider.paymentservice.event.PaymentEvent;
 import org.springframework.context.ApplicationEvent;
 
 /**

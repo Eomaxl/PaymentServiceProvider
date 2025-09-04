@@ -1,8 +1,8 @@
 package com.paymentprovider.paymentservice.services;
 
-import com.paymentprovider.paymentservice.dto.CurrencyConversionRequest;
-import com.paymentprovider.paymentservice.dto.CurrencyConversionResponse;
-import com.paymentprovider.paymentservice.dto.ExchangeRateResponse;
+import com.paymentprovider.paymentservice.currencyservice.dto.CurrencyConversionRequest;
+import com.paymentprovider.paymentservice.currencyservice.dto.CurrencyConversionResponse;
+import com.paymentprovider.paymentservice.currencyservice.dto.ExchangeRateResponse;
 import com.paymentprovider.paymentservice.domain.Currency;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

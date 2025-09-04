@@ -1,6 +1,6 @@
 package com.paymentprovider.paymentservice.event.publisher;
 
-import com.paymentprovider.payment.event.PaymentEventType;
+import com.paymentprovider.paymentservice.event.PaymentEventType;
 
 import java.util.ArrayList;
 import java.util.List;

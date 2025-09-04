@@ -1,6 +1,6 @@
 package com.paymentprovider.paymentservice.domain;
 
-import com.paymentprovider.payment.security.EncryptedStringConverter;
+import com.paymentprovider.paymentservice.security.EncryptedStringConverter;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 

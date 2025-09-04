@@ -1,8 +1,8 @@
 package com.paymentprovider.paymentservice.event.consumer;
 
-import com.paymentprovider.payment.event.PaymentEvent;
-import com.paymentprovider.payment.event.PaymentEventType;
-import com.paymentprovider.payment.event.publisher.PaymentEventPublished;
+import com.paymentprovider.paymentservice.event.PaymentEvent;
+import com.paymentprovider.paymentservice.event.PaymentEventType;
+import com.paymentprovider.paymentservice.event.publisher.PaymentEventPublished;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;

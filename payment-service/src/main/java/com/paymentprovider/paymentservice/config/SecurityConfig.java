@@ -1,10 +1,10 @@
 package com.paymentprovider.paymentservice.config;
 
-import com.paymentprovider.payment.security.AuthenticationService;
-import com.paymentprovider.payment.security.JwtAuthenticationFilter;
-import com.paymentprovider.payment.security.ApiKeyAuthenticationFilter;
-import com.paymentprovider.payment.security.RateLimitingFilter;
-import com.paymentprovider.payment.security.SecurityEventFilter;
+import com.paymentprovider.paymentservice.security.AuthenticationService;
+import com.paymentprovider.paymentservice.security.JwtAuthenticationFilter;
+import com.paymentprovider.paymentservice.security.ApiKeyAuthenticationFilter;
+import com.paymentprovider.paymentservice.security.RateLimitingFilter;
+import com.paymentprovider.paymentservice.security.SecurityEventFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;

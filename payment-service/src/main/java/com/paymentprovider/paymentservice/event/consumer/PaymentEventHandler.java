@@ -1,6 +1,6 @@
 package com.paymentprovider.paymentservice.event.consumer;
 
-import com.paymentprovider.payment.event.PaymentEvent;
+import com.paymentprovider.paymentservice.event.PaymentEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

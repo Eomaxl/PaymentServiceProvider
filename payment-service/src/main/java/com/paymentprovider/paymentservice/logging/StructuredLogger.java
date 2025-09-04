@@ -1,6 +1,7 @@
 package com.paymentprovider.paymentservice.logging;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.paymentprovider.paymentservice.services.SensitiveDataMaskingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;

@@ -1,7 +1,7 @@
 package com.paymentprovider.paymentservice.services;
 
-import com.paymentprovider.payment.domain.Payment;
-import com.paymentprovider.payment.repository.PaymentRepository;
+import com.paymentprovider.paymentservice.domain.Payment;
+import com.paymentprovider.paymentservice.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
