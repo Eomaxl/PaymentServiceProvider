@@ -154,8 +154,6 @@ same database transaction, then having a separate process reliably publish it to
 Kafka — guaranteeing exactly-once event delivery.
 
 ---
-## Payment Flow Sequence Diagram
-![payment-flow-sequence](payment-flow-sequence.png)
 
 ## Tech Stack
 
@@ -300,3 +298,4 @@ Senior Backend Engineer | Java · Kafka · Distributed Systems · Python/AI
 
 > ⭐ If this project helped you understand distributed payment systems or
 > prepare for system design interviews, a star is appreciated!
+
